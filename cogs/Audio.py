@@ -12,6 +12,8 @@ from threading import Timer
 
 class Audio(commands.Cog):
 
+    startTime = datetime.datetime.now()
+
     PLAYERS={}
 
     def __init__(self, bot):
@@ -19,18 +21,18 @@ class Audio(commands.Cog):
 
     #The loop that determines if the bot should leave the voice channel or not based on inactivity
     async def timeoutLoop(self, ctx, vc):
-        startTime = datetime.datetime.now() #reset startTime
+        self.startTime = datetime.datetime.now() #reset startTime
         while True:
             endTime = datetime.datetime.now() #This will be set every loop to determine inactivity. 
-            if((endTime.minute - startTime.minute) >= 5): #if the time is above 5 minutes
+            if((endTime.minute - self.startTime.minute) >= 5): #if the time is above 5 minutes
                 if vc.is_playing(): 
-                    startTime = datetime.datetime.now() #if the bot is playing something, reset the timer
+                    self.startTime = datetime.datetime.now() #if the bot is playing something, reset the timer
                     await asyncio.sleep(60)
                 else:
                     await self.PLAYERS['0'].disconnect() #if it is not playing, disconnect and break the loop
                     break
             elif vc.is_playing():
-                startTime = datetime.datetime.now()
+                self.startTime = datetime.datetime.now()
                 await asyncio.sleep(60)
             elif not self.PLAYERS['0'].is_connected(): #breaks the loop if the bot is not connected to a voice channel
                 break
@@ -50,7 +52,7 @@ class Audio(commands.Cog):
 
     #join the voice channel
     async def joinVoice(self, ctx):
-        startTime = datetime.datetime.now() #Save when the bot joined the voice channel
+        self.startTime = datetime.datetime.now() #Save when the bot joined the voice channel
         author = ctx.author 
         channel = author.voice.channel
         vc = await channel.connect()
@@ -70,7 +72,7 @@ class Audio(commands.Cog):
     @commands.command()
     async def play(self, ctx, *url):
         if self.voiceChecker(ctx) == True:
-            startTime = datetime.datetime.now() #reset startTime
+            self.startTime = datetime.datetime.now() #reset startTime
             search = (' '.join(url))
             try:
                 await self.joinVoice(ctx) #join the voice chanel
