@@ -34,7 +34,7 @@ class Audio(commands.Cog):
             elif vc.is_playing():
                 self.startTime = datetime.datetime.now()
                 await asyncio.sleep(60)
-            elif not self.PLAYERS['0'].is_connected(): #breaks the loop if the bot is not connected to a voice channel
+            elif not self.PLAYERS['0'].is_connected() or self.Players['0'] == None: #breaks the loop if the bot is not connected to a voice channel
                 break
             else:
                 await asyncio.sleep(60) #loop every 60 seconds
@@ -65,7 +65,10 @@ class Audio(commands.Cog):
     #This command calls the joinVoice method.
     @commands.command()
     async def join(self, ctx):
-        await self.joinVoice(ctx)
+        try:
+            await self.joinVoice(ctx)
+        except:
+            print("already connected to voice server")
 
     #Youtube link -> Audio stream
     #takes a link to a youtube-dl compatable link and streams it to the user's voice channel
@@ -74,11 +77,7 @@ class Audio(commands.Cog):
         if self.voiceChecker(ctx) == True:
             self.startTime = datetime.datetime.now() #reset startTime
             search = (' '.join(url))
-            try:
-                await self.joinVoice(ctx) #join the voice chanel
-            except:
-                #prevents the bot from moving channels
-                print("already connected to voice server") 
+            await self.join(ctx) #join the voice chanel
             #Prevents playlists from being downloaded. instead extracts the url for the real video
             if "&list=" in search:
                 search = search[:search.index("&list=")]
@@ -133,7 +132,8 @@ class Audio(commands.Cog):
                 return(False)
         except AttributeError:
             return(False)
-
+        except KeyError:
+            return(True)
 
     #Stops the audio
     @commands.command(pass_context = True)
