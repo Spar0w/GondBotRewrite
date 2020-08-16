@@ -6,7 +6,6 @@ import datetime
 import sys
 sys.path.append("./cogs")
 from RandomEmote import RandomEmote
-from Schedule import Schedule
 
 #Setup
 
@@ -17,7 +16,7 @@ bot = commands.Bot(command_prefix = PREFIX)
 startTime = datetime.datetime.now()
 
 #Token
-TOKEN = ''
+TOKEN = 'Token Lmao'
 
 #list of cogs
 cogs = ['cogs.Generic', 'cogs.Translate', 'cogs.Images', 'cogs.RandomEmote', 'cogs.Chad']
@@ -25,9 +24,6 @@ cogs = ['cogs.Generic', 'cogs.Translate', 'cogs.Images', 'cogs.RandomEmote', 'co
 #The setup event. Loads the cogs, sends the start message, and adds the presence
 @bot.event
 async def on_ready(): 
-    rEmote = RandomEmote(bot) 
-    daily_funny_emote = Schedule(rEmote.daily_emote(), bot)
-    #await daily_funny_emote.cool_thread()
     #Load the cogs
     for cog in cogs:
         bot.load_extension(cog)
