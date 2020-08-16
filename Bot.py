@@ -3,26 +3,31 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
 import datetime 
-from datetime import time
+import sys
+sys.path.append("./cogs")
+from RandomEmote import RandomEmote
+from Schedule import Schedule
 
 #Setup
 
 PREFIX = 'g<'
 bot = commands.Bot(command_prefix = PREFIX)
-#WORDS = json.loads(open('/home/Bot/dictionary-master/dictionary.json', encoding='utf-8').read())#May switch to another json file. Shouldn't effect the function tho.
 
 #Get's the time right now
 startTime = datetime.datetime.now()
 
 #Token
-TOKEN = 'token lmao'
+TOKEN = ''
 
 #list of cogs
-cogs = ['cogs.Generic', 'cogs.Audio', 'cogs.Translate', 'cogs.Images']
+cogs = ['cogs.Generic', 'cogs.Translate', 'cogs.Images', 'cogs.RandomEmote', 'cogs.Chad']
 
 #The setup event. Loads the cogs, sends the start message, and adds the presence
 @bot.event
-async def on_ready():
+async def on_ready(): 
+    rEmote = RandomEmote(bot) 
+    daily_funny_emote = Schedule(rEmote.daily_emote(), bot)
+    #await daily_funny_emote.cool_thread()
     #Load the cogs
     for cog in cogs:
         bot.load_extension(cog)
@@ -30,11 +35,10 @@ async def on_ready():
     print('Im ' + bot.user.name + ', and I am cooler than you at ' + str(startTime))
     print(discord.__version__)
     #Change the bot's presence
-    await bot.change_presence(activity=discord.Game(name=PREFIX))
-    return
+    await bot.change_presence(activity=(discord.Game(name=PREFIX, emoji=RandomEmote.FUNNY_EMOTE['alpha_code'])))
 
 #Reload command. Reloads a specified cog, only I call the command
-@bot.command()
+@bot.command(name='reload', hidden=True)
 async def reload(ctx, cog: str):
     if ctx.author.id == 180340046287601665: #My unique ID
         try:
@@ -43,11 +47,13 @@ async def reload(ctx, cog: str):
             #Let the user know that the cog has been reloaded
             print(cog + " has been reloaded")
             await ctx.send(f"`{cog} has been reloaded`")
+        except SyntaxError as se:
+            await ctx.send(e)
         except Exception as e:
             print(e)
     else:
         #Log if someone who is not me trys to reload a cog
         print(ctx.author + "is naughty")
 
-bot.run(TOKEN)
+bot.run(TOKEN, bot=True, reconnect=True)
 
