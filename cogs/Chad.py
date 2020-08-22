@@ -57,6 +57,8 @@ class Chad(commands.Cog):
                 response = (' '.join(response)) #Join them in one string
                 if not response: #If there is no input
                     response = 'default' #make it default
+        except:
+            await ctx.send("`An Error Occured!`")
         await self.chad_magic(ctx, response) #Creates the image
         with open('data/response.png', 'rb') as response:
             await ctx.send(file=discord.File(response, 'post.png')) #This sends send the modified image into the channel
