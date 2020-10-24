@@ -1,8 +1,9 @@
-from __future__ import unicode_literals 
+from __future__ import unicode_literals
+import asyncio
 import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
-import datetime 
+import datetime
 import sys
 sys.path.append("./cogs")
 from RandomEmote import RandomEmote
@@ -16,22 +17,23 @@ bot = commands.Bot(command_prefix = PREFIX)
 startTime = datetime.datetime.now()
 
 #Token
-TOKEN = 'Token Lmao'
+TOKEN = 'token lol'
+emoji=chr(int(RandomEmote.FUNNY_EMOTE[0], 16))
 
 #list of cogs
-cogs = ['cogs.Generic', 'cogs.Translate', 'cogs.Images', 'cogs.RandomEmote', 'cogs.Chad']
+cogs = ['cogs.Generic', 'cogs.Translate', 'cogs.Images', 'cogs.RandomEmote', 'cogs.Chad', 'cogs.Supervisor']
 
 #The setup event. Loads the cogs, sends the start message, and adds the presence
 @bot.event
-async def on_ready(): 
+async def on_ready():
+    ranE = RandomEmote(bot)
+    asyncio.ensure_future(ranE.multiThreadDrifting())
     #Load the cogs
     for cog in cogs:
         bot.load_extension(cog)
     #Start message
     print('Im ' + bot.user.name + ', and I am cooler than you at ' + str(startTime))
     print(discord.__version__)
-    #Change the bot's presence
-    await bot.change_presence(activity=(discord.Game(name=PREFIX, emoji=RandomEmote.FUNNY_EMOTE['alpha_code'])))
 
 #Reload command. Reloads a specified cog, only I call the command
 @bot.command(name='reload', hidden=True)
