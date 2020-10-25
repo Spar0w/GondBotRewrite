@@ -57,7 +57,7 @@ class RandomEmote(commands.Cog):
                 channel = self.bot.get_channel(738728637376757780)
                 await channel.send("`Funny Emote:`")
                 await channel.send(chr(int(self.FUNNY_EMOTE[0], 16)))
-                await asyncio.sleep(3600)
+                await asyncio.sleep(86400)
             else:
                 await asyncio.sleep(3600)
 
