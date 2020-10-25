@@ -50,16 +50,16 @@ class RandomEmote(commands.Cog):
         while True:
             time_now = datetime.datetime.now()
             #If it is midnight, reset funny_emote
-            if time_now.hour == 0:
+            if time_now.hour == 4:
                 print("Doing the thing!")
                 self.FUNNY_EMOTE = str(random.choice(list(self.DATA.values()))['code_points']['base']).split("-")
                 await self.bot.change_presence(activity=(discord.Game(name = "g<" + " " + chr(int(self.FUNNY_EMOTE[0], 16)))))
                 channel = self.bot.get_channel(738728637376757780)
                 await channel.send("`Funny Emote:`")
                 await channel.send(chr(int(self.FUNNY_EMOTE[0], 16)))
-                await asyncio.sleep(600)
+                await asyncio.sleep(3600)
             else:
-                await asyncio.sleep(600)
+                await asyncio.sleep(3600)
 
     #starts the timeoutLoop function on a thread loop
     async def multiThreadDrifting(self):
