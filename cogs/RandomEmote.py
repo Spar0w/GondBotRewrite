@@ -50,7 +50,7 @@ class RandomEmote(commands.Cog):
         while True:
             time_now = datetime.datetime.now()
             #If it is midnight, reset funny_emote
-            if time_now.hour == 4:
+            if time_now.hour == 5:
                 print("Doing the thing!")
                 self.FUNNY_EMOTE = str(random.choice(list(self.DATA.values()))['code_points']['base']).split("-")
                 await self.bot.change_presence(activity=(discord.Game(name = "g<" + " " + chr(int(self.FUNNY_EMOTE[0], 16)))))
