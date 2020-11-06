@@ -28,6 +28,7 @@ cogs = ['cogs.Generic', 'cogs.Translate', 'cogs.Images', 'cogs.RandomEmote', 'co
 async def on_ready():
     ranE = RandomEmote(bot)
     asyncio.ensure_future(ranE.multiThreadDrifting())
+    await bot.change_presence(activity=discord.Game(name="g<" + emoji))
     #Load the cogs
     for cog in cogs:
         bot.load_extension(cog)
