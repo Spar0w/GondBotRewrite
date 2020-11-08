@@ -20,7 +20,6 @@ class RandomEmote(commands.Cog):
 
     async def generate_emote(self):
         emote = random.choice(list(self.DATA.values()))
-        #make it not racist
         if not "tone" in emote['shortname']:
             return emote['shortname']
         else:
