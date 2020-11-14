@@ -37,7 +37,7 @@ class Images(commands.Cog):
     @commands.command(pass_context=True)
     async def gondola(self, ctx):
         async with aiohttp.ClientSession() as session:
-            async with session.get('https://spar0w.xyz/rangond.php') as img:
+            async with session.get('https://sparow.club/gondfotoday.php') as img:
                 if img.status == 200:
                     await ctx.send(await img.text())
                 else:
